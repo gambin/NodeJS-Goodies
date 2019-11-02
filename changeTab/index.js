@@ -22,15 +22,16 @@ function changeTab() {
         driver.getAllWindowHandles().then(function (handles) {
 
             // Updates current number of tabs
-            if (handles.length != totalTab){
-                totalTab = handles.length;
-            }
+            totalTab = handles.length != totalTab ? handles.length : totalTab;
 
             // Defines last tab to be switched
             lastTabIndex = lastTabIndex < (totalTab - 1)? lastTabIndex + 1 : 0; 
 
+            // make it happens!
             driver.switchTo().window(handles[lastTabIndex]);
         });
+
+        // reload
         changeTab();
     }, switchIntervalSeconds * 1000);
 }
@@ -40,7 +41,7 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-rl.question('Press any key to start tab switching :D ', (answer) => {
+rl.question(`Open how many tabs you want \nand press any key to start tab switching \nduring ${switchIntervalSeconds} seconds interval!`, (answer) => {
   console.log('Starting... \n');
   changeTab();
   rl.close();
