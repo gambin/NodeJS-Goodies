@@ -27,7 +27,7 @@ function changeTab() {
             }
 
             // Defines last tab to be switched
-            lastTabIndex = lastTabIndex < (totalTab - 1)? lastTabIndex++ : 0; 
+            lastTabIndex = lastTabIndex < (totalTab - 1)? lastTabIndex + 1 : 0; 
 
             driver.switchTo().window(handles[lastTabIndex]);
         });
