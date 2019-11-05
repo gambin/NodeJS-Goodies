@@ -1,19 +1,19 @@
-const selenium = {Builder, By, until} = require('selenium-webdriver');
+const selenium = {Builder, By, until, Capabilities} = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
 const chromedriver = require('chromedriver');
 const readline = require('readline');
 
 const switchIntervalSeconds = 30;
+const capabilities = Capabilities.chrome();
+capabilities.set('chromeOptions', { "w3c": false });
+
 let lastTabIndex = 0;
 let totalTab = 0;
-let o = new chrome.Options();
-
-o.addArguments('disable-infobars');
-o.setUserPreferences({ credential_enable_service: false });
 
 chrome.setDefaultService(new chrome.ServiceBuilder(chromedriver.path).build());
     var driver = new selenium.Builder()
   .forBrowser('chrome')
+  .withCapabilities(capabilities)
   .build();
 
 function changeTab() {
@@ -27,11 +27,15 @@ function changeTab() {
             // Defines last tab to be switched
             lastTabIndex = lastTabIndex < (totalTab - 1)? lastTabIndex + 1 : 0; 
 
+            // page refresh
+            driver.navigate().refresh();
+
             // make it happens!
             driver.switchTo().window(handles[lastTabIndex]);
+            
         });
 
-        // reload
+        // reload method
         changeTab();
     }, switchIntervalSeconds * 1000);
 }
